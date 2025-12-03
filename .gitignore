@@ -1,0 +1,3 @@
+ruff.py
+*__pycache__/
+# Items/__pycache__/
