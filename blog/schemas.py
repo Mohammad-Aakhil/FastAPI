@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 class BlogBase(BaseModel):
     title : str
@@ -15,12 +15,14 @@ class Blog(BlogBase):
 class Users(BaseModel):
     name : str
     email: str  
-    password: str 
+    password: str
+    role: str 
 
 
 class showUser(BaseModel):
     name: str
     email: str
+    role: str
     blogs: List[Blog] = []
     class Config():
         from_attributes = True
@@ -46,6 +48,18 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    name:str| None = None
-    email: str | None = None
+    user_id: int
+    role: str
 
+##----------------------------------------------------
+class UserBase(BaseModel):
+    id: int
+    name: str
+    email: str
+
+    class Config:
+        orm_mode = True
+
+class BlogWithUser(BlogBase):
+    creator: UserBase
+    

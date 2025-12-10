@@ -26,3 +26,4 @@ def list_routes(app):
 
 print("AVAILABLE ROUTES:")
 print(list_routes(app))
+
