@@ -1,13 +1,10 @@
 from fastapi import FastAPI
-from . import models
 from .database import *
 from .routers import user, blog, auth
 
 
-
 app = FastAPI()
 
-models.Base.metadata.create_all(engine)
 
 app.include_router(auth.router)
 app.include_router(blog.router)
@@ -27,3 +24,4 @@ def list_routes(app):
 print("AVAILABLE ROUTES:")
 print(list_routes(app))
 
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJyb2xlIjoiZWRpdG9yIiwidHlwZSI6InJlZnJlc2giLCJleHAiOjE3NjYwMzE2MzR9.4Fm8yZee8JV9IMUpaGNtO37y08dH1iGsqUY5RXVdrdQ

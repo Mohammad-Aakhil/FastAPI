@@ -1,9 +1,10 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from .. import database, schemas, models
-from sqlalchemy.orm import Session
 from ..hashing import Hash
 from typing import List
-
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from ..repository import users 
 
 router = APIRouter(
     prefix='/user',
@@ -13,27 +14,20 @@ get_db = database.get_db
 
 
 @router.post('/', response_model=schemas.showUser)
-def create_user(request: schemas.Users, db: Session = Depends(get_db)):
-    new_user = models.User(name=request.name, email=request.email, password=Hash.argon2(request.password), role=request.role )
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return new_user
-
-
+async def create_user(request: schemas.Users, 
+                      db: AsyncSession = Depends(get_db)):
+    return await users.create(request, db)
 
 
 @router.get("/", response_model=List[schemas.showUser])
-def get_users(db: Session = Depends(get_db)):
-    users = db.query(models.User).all()
-    return users
-
+async def get_users(db: AsyncSession = Depends(get_db)):
+    
+    return await users.get_all_users(db)
 
 
 @router.get('/{id}', response_model=schemas.showUser)
-def get_user(id:int, db: Session= Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == id).first()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'user with id:-{id} not found')
-    return user
+async def get_user(id:int, 
+                   db: AsyncSession= Depends(get_db)):
+    
+    return await users.get_user(id, db)
 

@@ -9,7 +9,7 @@ class Blog(Base):
     title = Column(String)
     body = Column(String)
     user_id = Column(Integer, ForeignKey('users.id'))
-    creator = relationship("User", back_populates="blogs")
+    creator = relationship("User", back_populates="blogs", lazy="selectin")
 
 
 class Roles(str, enum.Enum):
@@ -25,7 +25,7 @@ class User(Base):
     email = Column(String)
     password = Column(String)
     role = Column(Enum(Roles), default=Roles.user, nullable=False)
-    blogs = relationship('Blog', back_populates="creator")
+    blogs = relationship('Blog', back_populates="creator", lazy="selectin")
 
 
 
