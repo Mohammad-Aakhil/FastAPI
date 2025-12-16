@@ -4,10 +4,21 @@ from sqlalchemy import select, update,delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException
 
-async def get_all(db: AsyncSession):
-    blogs = await db.execute(select(models.Blog))
-    return blogs.scalars().all()
+# async def get_all(db: AsyncSession):
+#     blogs = await db.execute(select(models.Blog))
+#     return blogs.scalars().all()
 
+async def get_all(db: AsyncSession, page: int, limit: int):
+    offset = (page - 1) * limit
+
+    stmt = (
+        select(models.Blog)
+        .offset(offset)
+        .limit(limit)
+    )
+
+    result = await db.execute(stmt)
+    return result.scalars().all()
 
 async def create(request:schemas.Blog, 
                  db: AsyncSession, 

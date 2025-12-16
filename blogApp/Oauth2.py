@@ -36,3 +36,4 @@ def require_roles(*allowed_roles: str):
                                 detail="Insufficient permissions")
         return current_user
     return role_checker
+

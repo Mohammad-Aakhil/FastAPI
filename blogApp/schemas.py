@@ -7,7 +7,7 @@ class BlogBase(BaseModel):
 
 
 class Blog(BlogBase):
-    class Config():
+    class ConfigDict():
         from_attributes = True
 
 
@@ -23,7 +23,7 @@ class showUser(BaseModel):
     email: str
     role: str
     # blogs: List[Blog] = []
-    class Config():
+    class ConfigDict():
         from_attributes = True
 
 
@@ -32,7 +32,7 @@ class showBlog(Blog):
     title : str
     body: str
     creator: showUser
-    class Config():
+    class ConfigDict():
         # orm_mode = True
         from_attributes = True
 
@@ -58,7 +58,7 @@ class UserBase(BaseModel):
     name: str
     email: str
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 class BlogWithUser(BlogBase):

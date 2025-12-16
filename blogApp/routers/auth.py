@@ -11,7 +11,7 @@ router = APIRouter(
 get_db = database.get_db
 
 
-@router.post("/login")
+@router.post("/login", status_code=202)
 async def login(request: OAuth2PasswordRequestForm = Depends(), 
                 db: AsyncSession  = Depends(get_db)
                 ):
